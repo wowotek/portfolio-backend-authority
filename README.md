@@ -1,5 +1,7 @@
 # Portfolio: Authority Backend
 
+> NOTE: package-lock.json not included, because i haven't settled in package versions and whatnot.
+
 Authority duties are:
 - `User` Registration
 - `Session` Authorization
