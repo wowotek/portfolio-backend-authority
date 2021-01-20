@@ -19,7 +19,7 @@ miscRoutes.get("/sanity_check", async (req, res) => {
         status: "success",
         content: "sane"
     });
-})
+});
 
 
 module.exports = {

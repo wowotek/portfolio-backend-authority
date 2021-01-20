@@ -1,0 +1,17 @@
+GET http://localhost:8000/misc/ping HTTP/1.1
+Content-Type: application/json
+
+{
+    "hello": "world"
+}
+
+###
+
+GET http://localhost:8000/misc/sanity_check HTTP/1.1
+Content-Type: application/json
+
+{
+    "hello": "world"
+}
+
+###

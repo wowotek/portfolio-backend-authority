@@ -22,12 +22,24 @@ const UserModel = {
     created: {
         type: Date,
         required: true,
-        default: () => { return new Date() }
+        default: () => {
+            return new Date()
+        }
+    },
+    is_deleted: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    activities: {
+        type: [],
+        required: false
     }
 };
 
-const UserScheme = new Schema(UserModel);
-const User = models("users", UserScheme);
+const UserSchema = new Schema(UserModel);
+const User = models("users", UserSchema);
+
 
 module.exports = {
     User

@@ -1,6 +1,28 @@
 const crypto = require("crypto");
 
+module.exports.checkItemsContaintsNulls = async (
+    items
+) => {
+    const p1 = (async () => {
+        return items.include(null)
+    });
+    const p2 = (async () => {
+        let condition = false;
+        for(let item of items){
+            if(item == null){
+                return true
+            }
+            condition = true;
+        }
 
+        return condition;
+    });
+
+    return p1 && p2;
+}
+
+
+// --- Credentials and Cryptographics
 module.exports.generateSalt = async () => {
     let bytes = [];
     for(let i=0; i<512; i++){
@@ -16,7 +38,6 @@ module.exports.generateSalt = async () => {
 
     return nm;
 };
-
 
 const _hashPassword = async (
     literal_password,
@@ -40,7 +61,6 @@ module.exports.hashPassword = async (
     return nm;
 }
 
-
 module.exports.comparePassword = async (
     saved_password,
     saved_salt,
@@ -50,3 +70,29 @@ module.exports.comparePassword = async (
 
     return hashed == saved_password;
 };
+
+module.exports.generateSessionID = async (
+    username,
+    password
+) => {
+    let salts = (async () => {
+        let s = [];
+        for(let i=0; i<128; i++){
+            s.push(this.generateSalt());
+        }
+
+        await Promise.all(s);
+        let ss = "";
+        for(let salt of s){
+            ss = `${ss}${salt}`;
+        }
+
+        return ss.toString();
+    })();
+
+    let data = `${username}${salts}${new Date()}${password}`;
+    const hasher = crypto.createHash("sha512");
+    hasher.update(data);
+
+    return hasher.digest("hex").toString();
+}
