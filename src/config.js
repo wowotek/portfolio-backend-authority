@@ -1,6 +1,6 @@
 const SERVICE = {
     HOST: process.env.SERVICE_HOST || "0.0.0.0",
-    PORT: process.env.SERVICE_PORT || 8000
+    PORT: process.env.SERVICE_PORT || 8001
 };
 
 const DATABASE = {

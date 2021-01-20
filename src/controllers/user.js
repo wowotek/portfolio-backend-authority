@@ -18,6 +18,7 @@ module.exports.getUserByUsername = async (
 };
 
 /**
+ * Check if user credential is valid via username and password
  * 
  * @param {*} email 
  */
@@ -58,7 +59,7 @@ module.exports.getUserByEmail = async (
     return user != null ?
     { status: true, content: user }
         :
-    { status: false, contet: "user_not_found"}
+    { status: false, content: "user_not_found"}
 };
 
 /**
@@ -73,6 +74,18 @@ module.exports.addUser = async (
     email,
     password
 ) => {
+    // Check if username exist
+    const checkUsername = await this.getUserByUsername(username);
+    if(checkUsername.status){
+        throw Error("user_exist");
+    }
+
+    // Check if Email Exist
+    const checkEmail = await this.getUserByEmail(email);
+    if(checkEmail.status){
+        throw Error("email_exist")
+    }
+
     /* Generate Salt for each of new user */
     const newSalt = await Utils.generateSalt();
     /* Hash Password with created salt */
@@ -166,24 +179,15 @@ module.exports.changeEmail = async (
     // Gather User
     let user = await this.getUserByUsername(username);
     if(!user.status){
-        return {
-            status: false,
-            content: user.content
-        };
+        throw Error(user.content);
     }
 
     if(user.email != last_email){
-        return {
-            status: false,
-            content: "email_not_found"
-        };
+        throw Error("email_not_found");
     }
 
     if(user.email == new_email){
-        return {
-            status: false,
-            content: "email_same_as_before"
-        };
+        throw Error("email_same_as_before");
     }
 
     user.email = new_email;

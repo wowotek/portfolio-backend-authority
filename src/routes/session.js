@@ -8,23 +8,34 @@ const sessionRoutes = express.Router();
 
 /* Login */
 sessionRoutes.post("/login", async (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    
-    if(await Utils.checkItemsContaintsNulls([username, password])){
-        res.status(400);
-        res.json({
-            status: "invalid_request"
+    let username = null;
+    let password = null;
+    (async () => {
+        username = req.body.username;
+        password = req.body.password;
+    })()
+    .then(async () => {
+        if(await Utils.checkItemsContaintsNulls([username, password])){
+            res.status(400);
+            res.json({
+                status: "invalid_request"
+            });
+            return;
+        }
+    })
+    .then(async () => {
+        SessionController.login(username, password).then(result => {
+            res.status(200);
+            res.json({
+                status: "success",
+                content: result.content
+            });
+        }).catch(err => {
+            res.status(403);
+            res.json({
+                status: err.message
+            })
         });
-        return;
-    }
-
-    const session_id = await SessionController.login(username, password);
-    
-    res.status(400);
-    res.json({
-        status: "success",
-        content: session_id.content
     })
 })
 

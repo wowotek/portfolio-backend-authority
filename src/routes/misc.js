@@ -6,10 +6,12 @@ const miscRoutes = express.Router();
 
 /* Ping */
 miscRoutes.get("/ping", async (req, res) => {
-    res.json({
-        status: "success",
-        content: "pong!"
-    });
+    (async (req, res) => {
+        res.json({
+            status: "success",
+            content: "pong!"
+        });
+    })(req, res);
 });
 
 /* Sanity Check */

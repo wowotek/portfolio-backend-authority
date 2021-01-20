@@ -5,11 +5,15 @@ const models = require("mongoose").model;
 const UserModel = {
     username: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        index: true
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        index: true
     },
     password: {
         type: String,
@@ -17,7 +21,8 @@ const UserModel = {
     },
     salt: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     created: {
         type: Date,

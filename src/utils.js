@@ -3,21 +3,22 @@ const crypto = require("crypto");
 module.exports.checkItemsContaintsNulls = async (
     items
 ) => {
-    const p1 = (async () => {
-        return items.include(null)
-    });
-    const p2 = (async () => {
-        let condition = false;
+    const p1 = await (async () => {
+        return items.includes(null) || items.includes(undefined);
+    })();
+    const p2 = await (async () => {
+        let condition = true;
         for(let item of items){
-            if(item == null){
-                return true
+            if(item == null || item == undefined){
+                return false
             }
-            condition = true;
+            condition = false;
         }
 
         return condition;
-    });
+    })();
 
+    console.log(p1, p2, p1 && p2);
     return p1 && p2;
 }
 
