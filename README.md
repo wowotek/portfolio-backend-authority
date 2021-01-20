@@ -34,4 +34,4 @@ npm run start
 
 ## Documentation
 
-Please refer to `./http`
+Please refer to `.http` file
